@@ -1,0 +1,105 @@
+<Window x:Class="FPTMart.Views.PaymentDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Thanh Toán" 
+        Height="580" Width="450"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="White">
+
+    <Grid Margin="25">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+            <materialDesign:PackIcon Kind="CashRegister" Width="32" Height="32" Foreground="#388E3C"/>
+            <TextBlock Text="Thanh Toán" FontSize="24" FontWeight="Medium" Margin="15,0,0,0" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Content -->
+        <StackPanel Grid.Row="1">
+            <!-- Total Amount -->
+            <Border Background="#E8F5E9" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="Tổng Tiền" Foreground="#388E3C" FontSize="14" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding TotalAmount, StringFormat='{}{0:N0} đ'}" 
+                               FontSize="36" 
+                               FontWeight="Bold" 
+                               Foreground="#388E3C"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Payment Method -->
+            <TextBlock Text="Phương thức thanh toán" Foreground="Gray" Margin="0,0,0,10"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <RadioButton Content="Tiền mặt" 
+                             GroupName="PaymentMethod" 
+                             IsChecked="{Binding IsCashPayment}"
+                             Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
+                             Margin="0,0,10,0"/>
+                <RadioButton Content="Chuyển khoản" 
+                             GroupName="PaymentMethod"
+                             Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"/>
+            </StackPanel>
+
+            <!-- Cash Received -->
+            <TextBox Text="{Binding CashReceived, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Tiền khách đưa"
+                     materialDesign:HintAssist.IsFloating="True"
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                     FontSize="18"
+                     Margin="0,0,0,15"/>
+
+            <!-- Change -->
+            <Border Background="{Binding ChangeBackground}" CornerRadius="10" Padding="15">
+                <Grid>
+                    <TextBlock Text="Tiền thừa:" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding ChangeAmount, StringFormat='{}{0:N0} đ'}" 
+                               HorizontalAlignment="Right" 
+                               FontSize="24" 
+                               FontWeight="Bold"
+                               Foreground="{Binding ChangeForeground}"/>
+                </Grid>
+            </Border>
+
+            <!-- Quick Cash Buttons -->
+            <TextBlock Text="Chọn nhanh:" Foreground="Gray" Margin="0,15,0,10"/>
+            <WrapPanel>
+                <Button Content="50,000" Command="{Binding SetCashCommand}" CommandParameter="50000" Style="{StaticResource MaterialDesignOutlinedButton}" Margin="0,0,8,8"/>
+                <Button Content="100,000" Command="{Binding SetCashCommand}" CommandParameter="100000" Style="{StaticResource MaterialDesignOutlinedButton}" Margin="0,0,8,8"/>
+                <Button Content="200,000" Command="{Binding SetCashCommand}" CommandParameter="200000" Style="{StaticResource MaterialDesignOutlinedButton}" Margin="0,0,8,8"/>
+                <Button Content="500,000" Command="{Binding SetCashCommand}" CommandParameter="500000" Style="{StaticResource MaterialDesignOutlinedButton}" Margin="0,0,8,8"/>
+                <Button Content="Đủ tiền" Command="{Binding SetExactCommand}" Style="{StaticResource MaterialDesignOutlinedButton}" Margin="0,0,8,8"/>
+            </WrapPanel>
+        </StackPanel>
+
+        <!-- Buttons -->
+        <Grid Grid.Row="2" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" 
+                    Content="Hủy"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Command="{Binding CancelCommand}"
+                    Height="45"
+                    Margin="0,0,10,0"/>
+            
+            <Button Grid.Column="1" 
+                    Content="XÁC NHẬN"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Background="#388E3C"
+                    Command="{Binding ConfirmCommand}"
+                    IsEnabled="{Binding CanConfirm}"
+                    Height="45"/>
+        </Grid>
+    </Grid>
+</Window>
