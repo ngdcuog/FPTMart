@@ -117,6 +117,13 @@ public partial class ProductDialog : Window
             if (scannerDialog.ShowDialog() == true && !string.IsNullOrEmpty(scannerDialog.ScannedBarcode))
             {
                 _viewModel.Product.Barcode = scannerDialog.ScannedBarcode;
+                
+                // Update TextBox directly since DTO doesn't have INotifyPropertyChanged
+                var barcodeTextBox = FindName("BarcodeTextBox") as System.Windows.Controls.TextBox;
+                if (barcodeTextBox != null)
+                {
+                    barcodeTextBox.Text = scannerDialog.ScannedBarcode;
+                }
             }
         }
         catch (Exception ex)

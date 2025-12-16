@@ -85,7 +85,8 @@ public partial class ProductListViewModel : BaseViewModel
     private async Task AddProductAsync()
     {
         var dialog = new ProductDialog(null);
-        dialog.Owner = Application.Current.MainWindow;
+        var mainWin = Application.Current.MainWindow;
+        if (mainWin != null && mainWin != dialog) dialog.Owner = mainWin;
         
         if (dialog.ShowDialog() == true && dialog.Result != null)
         {
@@ -99,7 +100,8 @@ public partial class ProductListViewModel : BaseViewModel
         if (product == null) return;
 
         var dialog = new ProductDialog(product);
-        dialog.Owner = Application.Current.MainWindow;
+        var mainWin = Application.Current.MainWindow;
+        if (mainWin != null && mainWin != dialog) dialog.Owner = mainWin;
         
         if (dialog.ShowDialog() == true && dialog.Result != null)
         {

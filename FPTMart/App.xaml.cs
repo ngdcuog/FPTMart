@@ -19,6 +19,30 @@ public partial class App : Application
 
     public App()
     {
+        // Global exception handlers - prevent silent crash
+        DispatcherUnhandledException += (s, e) =>
+        {
+            MessageBox.Show($"Lỗi ứng dụng:\n{e.Exception.Message}\n\nChi tiết:\n{e.Exception.StackTrace}", 
+                "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            e.Handled = true;
+        };
+        
+        AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+        {
+            if (e.ExceptionObject is Exception ex)
+            {
+                MessageBox.Show($"Lỗi nghiêm trọng:\n{ex.Message}", 
+                    "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        };
+        
+        TaskScheduler.UnobservedTaskException += (s, e) =>
+        {
+            MessageBox.Show($"Lỗi bất đồng bộ:\n{e.Exception.Message}", 
+                "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            e.SetObserved();
+        };
+
         var services = new ServiceCollection();
         ConfigureServices(services);
         _serviceProvider = services.BuildServiceProvider();

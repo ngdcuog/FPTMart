@@ -150,7 +150,8 @@ public partial class POSViewModel : BaseViewModel
         try
         {
             var scannerDialog = new BarcodeScannerDialog();
-            scannerDialog.Owner = Application.Current.MainWindow;
+            var mainWin = Application.Current.MainWindow;
+            if (mainWin != null && mainWin != scannerDialog) scannerDialog.Owner = mainWin;
 
             if (scannerDialog.ShowDialog() == true && !string.IsNullOrEmpty(scannerDialog.ScannedBarcode))
             {
@@ -317,7 +318,11 @@ public partial class POSViewModel : BaseViewModel
 
         // Show payment dialog
         var paymentDialog = new PaymentDialog(TotalAmount);
-        paymentDialog.Owner = Application.Current.MainWindow;
+        var mainWindow = Application.Current.MainWindow;
+        if (mainWindow != null && mainWindow != paymentDialog)
+        {
+            paymentDialog.Owner = mainWindow;
+        }
 
         if (paymentDialog.ShowDialog() != true)
         {
@@ -342,7 +347,8 @@ public partial class POSViewModel : BaseViewModel
 
             // Show Invoice Dialog
             var invoiceDialog = new InvoiceDialog(result);
-            invoiceDialog.Owner = Application.Current.MainWindow;
+            var mainWnd = Application.Current.MainWindow;
+            if (mainWnd != null && mainWnd != invoiceDialog) invoiceDialog.Owner = mainWnd;
             invoiceDialog.ShowDialog();
 
             // Reset cart

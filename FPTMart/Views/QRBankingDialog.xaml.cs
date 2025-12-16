@@ -20,19 +20,32 @@ public partial class QRBankingDialog : Window
     {
         try
         {
-            // Path to QR image
-            var qrPath = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory, 
-                "..", "..", "..", "..", 
-                "FPTMart.DAL", "Data", "QR_Banking", "qr_chuyen_khoan.png");
+            // Try multiple paths to find QR image
+            var possiblePaths = new[]
+            {
+                // When running from VS (bin/Debug/net9.0-windows/)
+                Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "FPTMart.DAL", "Data", "QR_Banking", "qr_chuyen_khoan.png")),
+                // Direct path from solution root
+                Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "FPTMart.DAL", "Data", "QR_Banking", "qr_chuyen_khoan.png")),
+                // Absolute fallback
+                @"D:\1.FPT\Semester_5\PRN212_GiaoLang\FPTMart\FPTMart.DAL\Data\QR_Banking\qr_chuyen_khoan.png"
+            };
+
+            string? foundPath = null;
+            foreach (var path in possiblePaths)
+            {
+                if (File.Exists(path))
+                {
+                    foundPath = path;
+                    break;
+                }
+            }
             
-            qrPath = Path.GetFullPath(qrPath);
-            
-            if (File.Exists(qrPath))
+            if (foundPath != null)
             {
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
-                bitmap.UriSource = new Uri(qrPath, UriKind.Absolute);
+                bitmap.UriSource = new Uri(foundPath, UriKind.Absolute);
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
                 bitmap.Freeze();
@@ -41,7 +54,7 @@ public partial class QRBankingDialog : Window
             }
             else
             {
-                MessageBox.Show($"Không tìm thấy file QR: {qrPath}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show($"Không tìm thấy file QR.\nĐã thử:\n{string.Join("\n", possiblePaths)}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
         catch (Exception ex)

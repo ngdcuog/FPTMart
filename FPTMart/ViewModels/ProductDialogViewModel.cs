@@ -32,45 +32,53 @@ public partial class ProductDialogViewModel : BaseViewModel
 
     public async void Initialize(ProductDto? existingProduct)
     {
-        // Load categories
-        Categories = (await _categoryService.GetActiveCategoriesAsync()).ToList();
+        try
+        {
+            // Load categories
+            Categories = (await _categoryService.GetActiveCategoriesAsync()).ToList();
 
-        if (existingProduct != null)
-        {
-            // Edit mode
-            Product = new ProductDto
+            if (existingProduct != null)
             {
-                Id = existingProduct.Id,
-                ProductCode = existingProduct.ProductCode,
-                Barcode = existingProduct.Barcode,
-                Name = existingProduct.Name,
-                Description = existingProduct.Description,
-                CategoryId = existingProduct.CategoryId,
-                CostPrice = existingProduct.CostPrice,
-                SellingPrice = existingProduct.SellingPrice,
-                StockQuantity = existingProduct.StockQuantity,
-                MinStockLevel = existingProduct.MinStockLevel,
-                UnitsPerCase = existingProduct.UnitsPerCase,
-                CaseUnit = existingProduct.CaseUnit,
-                Unit = existingProduct.Unit,
-                ImagePath = existingProduct.ImagePath,
-                IsActive = existingProduct.IsActive
-            };
-            DialogTitle = "Sửa Sản Phẩm";
-            IsNew = false;
+                // Edit mode
+                Product = new ProductDto
+                {
+                    Id = existingProduct.Id,
+                    ProductCode = existingProduct.ProductCode,
+                    Barcode = existingProduct.Barcode,
+                    Name = existingProduct.Name,
+                    Description = existingProduct.Description,
+                    CategoryId = existingProduct.CategoryId,
+                    CostPrice = existingProduct.CostPrice,
+                    SellingPrice = existingProduct.SellingPrice,
+                    StockQuantity = existingProduct.StockQuantity,
+                    MinStockLevel = existingProduct.MinStockLevel,
+                    UnitsPerCase = existingProduct.UnitsPerCase,
+                    CaseUnit = existingProduct.CaseUnit,
+                    Unit = existingProduct.Unit,
+                    ImagePath = existingProduct.ImagePath,
+                    IsActive = existingProduct.IsActive
+                };
+                DialogTitle = "Sửa Sản Phẩm";
+                IsNew = false;
+            }
+            else
+            {
+                // New product
+                Product = new ProductDto
+                {
+                    ProductCode = await _productService.GenerateProductCodeAsync(),
+                    IsActive = true,
+                    MinStockLevel = 10,
+                    Unit = "Cái"
+                };
+                DialogTitle = "Thêm Sản Phẩm";
+                IsNew = true;
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // New product
-            Product = new ProductDto
-            {
-                ProductCode = await _productService.GenerateProductCodeAsync(),
-                IsActive = true,
-                MinStockLevel = 10,
-                Unit = "Cái"
-            };
-            DialogTitle = "Thêm Sản Phẩm";
-            IsNew = true;
+            System.Windows.MessageBox.Show($"Lỗi khởi tạo: {ex.Message}", "Lỗi", 
+                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
         }
     }
 

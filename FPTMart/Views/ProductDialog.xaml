@@ -39,7 +39,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     
-                    <TextBox Grid.Column="0"
+                    <TextBox x:Name="BarcodeTextBox" Grid.Column="0"
                              Text="{Binding Product.Barcode, UpdateSourceTrigger=PropertyChanged}"
                              materialDesign:HintAssist.Hint="Barcode (mã vạch)"
                              materialDesign:HintAssist.IsFloating="True"
