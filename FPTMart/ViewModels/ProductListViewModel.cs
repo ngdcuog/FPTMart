@@ -38,7 +38,7 @@ public partial class ProductListViewModel : BaseViewModel
         {
             IsLoading = true;
             var products = await _productService.GetAllProductsAsync();
-            Products = new ObservableCollection<ProductDto>(products);
+            Products = new ObservableCollection<ProductDto>(products.Where(p => p.IsActive));
             
             Categories = (await _categoryService.GetActiveCategoriesAsync()).ToList();
         }

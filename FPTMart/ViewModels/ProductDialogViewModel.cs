@@ -50,6 +50,8 @@ public partial class ProductDialogViewModel : BaseViewModel
                 SellingPrice = existingProduct.SellingPrice,
                 StockQuantity = existingProduct.StockQuantity,
                 MinStockLevel = existingProduct.MinStockLevel,
+                UnitsPerCase = existingProduct.UnitsPerCase,
+                CaseUnit = existingProduct.CaseUnit,
                 Unit = existingProduct.Unit,
                 ImagePath = existingProduct.ImagePath,
                 IsActive = existingProduct.IsActive

@@ -17,6 +17,7 @@
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
             <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
             <converters:ProductImageConverter x:Key="ProductImageConverter"/>
+            <converters:RoleToVietnameseConverter x:Key="RoleToVietnameseConverter"/>
             
             <!-- Custom Colors -->
             <SolidColorBrush x:Key="SidebarBackground" Color="#1E3A5F"/>

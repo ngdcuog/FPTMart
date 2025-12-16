@@ -44,7 +44,7 @@
                     <DataGridTextColumn Header="Họ Tên" Binding="{Binding FullName}" Width="*"/>
                     <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
                     <DataGridTextColumn Header="SĐT" Binding="{Binding Phone}" Width="110"/>
-                    <DataGridTemplateColumn Header="Role" Width="120">
+                    <DataGridTemplateColumn Header="Vai Trò" Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ItemsControl ItemsSource="{Binding Roles}">
@@ -56,7 +56,7 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border Background="#E3F2FD" CornerRadius="10" Padding="8,3" Margin="0,0,5,0">
-                                                <TextBlock Text="{Binding}" FontSize="11" Foreground="#1976D2"/>
+                                                <TextBlock Text="{Binding Converter={StaticResource RoleToVietnameseConverter}}" FontSize="11" Foreground="#1976D2"/>
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -155,7 +155,7 @@
                     
                     <ComboBox ItemsSource="{Binding Roles}"
                               SelectedItem="{Binding SelectedRole}"
-                              DisplayMemberPath="Name"
+                              DisplayMemberPath="DisplayName"
                               materialDesign:HintAssist.Hint="Chọn vai trò *"
                               materialDesign:HintAssist.IsFloating="True"
                               Style="{StaticResource MaterialDesignOutlinedComboBox}"

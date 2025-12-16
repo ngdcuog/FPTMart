@@ -16,8 +16,8 @@
             
             <Grid Margin="15">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="*" MinWidth="350"/>
+                    <ColumnDefinition Width="350"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Left: Product Selection -->
@@ -64,7 +64,7 @@
                                 <DataGridTextColumn Header="Mã SP" Binding="{Binding ProductCode}" Width="80"/>
                                 <DataGridTextColumn Header="Tên Sản Phẩm" Binding="{Binding Name}" Width="*"/>
                                 <DataGridTextColumn Header="Tồn" Binding="{Binding StockQuantity}" Width="60"/>
-                                <DataGridTemplateColumn Header="Thêm" Width="55">
+                                <DataGridTemplateColumn Header="Thêm" Width="60">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Style="{StaticResource MaterialDesignIconButton}"
@@ -236,7 +236,7 @@
                             <DataGridTextColumn Header="Mã Phiếu" Binding="{Binding StockInNumber}" Width="120"/>
                             <DataGridTextColumn Header="Nhà Cung Cấp" Binding="{Binding SupplierName}" Width="*"/>
                             <DataGridTextColumn Header="Ngày Nhập" Binding="{Binding StockInDate, StringFormat='dd/MM/yyyy HH:mm'}" Width="140"/>
-                            <DataGridTextColumn Header="Số SP" Binding="{Binding Items.Count}" Width="60"/>
+                            <DataGridTextColumn Header="Số Thùng" Binding="{Binding TotalCases}" Width="70"/>
                             <DataGridTextColumn Header="Tổng Tiền" Binding="{Binding TotalAmount, StringFormat='{}{0:N0} đ'}" Width="120">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">

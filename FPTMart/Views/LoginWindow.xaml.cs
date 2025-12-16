@@ -23,6 +23,11 @@ public partial class LoginWindow : Window
         Loaded += (s, e) => UsernameTextBox.Focus();
     }
 
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        Application.Current.Shutdown();
+    }
+
     private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
     {
         if (sender is PasswordBox pb)

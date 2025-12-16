@@ -96,3 +96,30 @@ public class ProductImageConverter : IValueConverter
         throw new NotImplementedException();
     }
 }
+
+/// <summary>
+/// Converts English role names to Vietnamese
+/// </summary>
+public class RoleToVietnameseConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is string role)
+        {
+            return role switch
+            {
+                "Admin" => "Quản trị viên",
+                "Manager" => "Quản lý",
+                "Cashier" => "Thu ngân",
+                "StockKeeper" => "Thủ kho",
+                _ => role
+            };
+        }
+        return value;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}

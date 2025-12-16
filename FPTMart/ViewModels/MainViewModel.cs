@@ -61,7 +61,7 @@ public partial class MainViewModel : BaseViewModel
             MenuItems.Add(new MenuItem { Title = "Quản Lý User", Icon = "AccountCog", PageType = typeof(Views.UserManagementView) });
         }
 
-        // Manager menu
+        // Manager menu (full management)
         if (user.Roles.Contains("Admin") || user.Roles.Contains("Manager"))
         {
             MenuItems.Add(new MenuItem { Title = "Sản Phẩm", Icon = "Package", PageType = typeof(Views.ProductListView) });
@@ -71,9 +71,19 @@ public partial class MainViewModel : BaseViewModel
             MenuItems.Add(new MenuItem { Title = "Khách Hàng", Icon = "AccountGroup", PageType = typeof(Views.CustomerListView) });
             MenuItems.Add(new MenuItem { Title = "Báo Cáo", Icon = "ChartBar", PageType = typeof(Views.ReportView) });
         }
+        
+        // StockKeeper menu (stock management only - NO sales)
+        if (user.Roles.Contains("StockKeeper") && !user.Roles.Contains("Admin") && !user.Roles.Contains("Manager"))
+        {
+            MenuItems.Add(new MenuItem { Title = "Sản Phẩm", Icon = "Package", PageType = typeof(Views.ProductListView) });
+            MenuItems.Add(new MenuItem { Title = "Nhập Kho", Icon = "TruckDelivery", PageType = typeof(Views.StockInView) });
+        }
 
-        // Cashier menu (POS for all roles)
-        MenuItems.Add(new MenuItem { Title = "Bán Hàng", Icon = "CashRegister", PageType = typeof(Views.POSView) });
+        // Cashier/POS menu - NOT for StockKeeper only
+        if (!user.Roles.Contains("StockKeeper") || user.Roles.Contains("Admin") || user.Roles.Contains("Manager") || user.Roles.Contains("Cashier"))
+        {
+            MenuItems.Add(new MenuItem { Title = "Bán Hàng", Icon = "CashRegister", PageType = typeof(Views.POSView) });
+        }
     }
 
     [RelayCommand]

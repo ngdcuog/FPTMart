@@ -108,9 +108,12 @@ public class SaleItemDto : INotifyPropertyChanged
         get => _quantity;
         set
         {
-            if (_quantity != value)
+            // Validate: min 1, max stock
+            var newValue = Math.Max(1, Math.Min(value, MaxQuantity > 0 ? MaxQuantity : value));
+            if (_quantity != newValue)
             {
-                _quantity = value;
+                _quantity = newValue;
+                TotalPrice = _quantity * UnitPrice; // Auto update total
                 OnPropertyChanged(nameof(Quantity));
             }
         }
@@ -146,10 +149,20 @@ public class StockInDto
     public decimal TotalAmount { get; set; }
     public string? Notes { get; set; }
     public List<StockInItemDto> Items { get; set; } = new();
+    
+    // Computed: total cases across all items
+    public int TotalCases => Items.Sum(i => i.CaseQuantity);
 }
 
-public class StockInItemDto
+public class StockInItemDto : INotifyPropertyChanged
 {
+    public event PropertyChangedEventHandler? PropertyChanged;
+    
+    private void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
     public int ProductId { get; set; }
     public string ProductCode { get; set; } = string.Empty;
     public string ProductName { get; set; } = string.Empty;
@@ -160,13 +173,41 @@ public class StockInItemDto
     public string Unit { get; set; } = "Cái";
     
     // User input: number of cases
-    public int CaseQuantity { get; set; } = 1;
+    private int _caseQuantity = 1;
+    public int CaseQuantity
+    {
+        get => _caseQuantity;
+        set
+        {
+            if (_caseQuantity != value)
+            {
+                _caseQuantity = value;
+                OnPropertyChanged(nameof(CaseQuantity));
+                OnPropertyChanged(nameof(Quantity));
+                OnPropertyChanged(nameof(TotalPrice));
+                OnPropertyChanged(nameof(ConversionDisplay));
+            }
+        }
+    }
     
     // Computed: total units = CaseQuantity * UnitsPerCase
     public int Quantity => CaseQuantity * UnitsPerCase;
     
     // Cost per case (user input)
-    public decimal CostPrice { get; set; }
+    private decimal _costPrice;
+    public decimal CostPrice
+    {
+        get => _costPrice;
+        set
+        {
+            if (_costPrice != value)
+            {
+                _costPrice = value;
+                OnPropertyChanged(nameof(CostPrice));
+                OnPropertyChanged(nameof(TotalPrice));
+            }
+        }
+    }
     
     // Total = CaseQuantity * CostPrice
     public decimal TotalPrice => CaseQuantity * CostPrice;
@@ -218,4 +259,14 @@ public class RoleDto
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
+    
+    // Vietnamese display name
+    public string DisplayName => Name switch
+    {
+        "Admin" => "Quản trị viên",
+        "Manager" => "Quản lý",
+        "Cashier" => "Thu ngân",
+        "StockKeeper" => "Thủ kho",
+        _ => Name
+    };
 }

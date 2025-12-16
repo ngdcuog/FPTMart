@@ -206,16 +206,17 @@
                                             <materialDesign:PackIcon Kind="Minus" Width="14" Height="14"/>
                                         </Button>
                                         
-                                        <Border Background="#E3F2FD" CornerRadius="4" Padding="8,2" Margin="5,0">
-                                            <TextBlock Text="{Binding Quantity}" 
-                                                       FontWeight="Bold" 
-                                                       FontSize="14"
-                                                       Foreground="#1976D2"
-                                                       VerticalAlignment="Center" 
-                                                       HorizontalAlignment="Center"
-                                                       MinWidth="20"
-                                                       TextAlignment="Center"/>
-                                        </Border>
+                                        <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Width="45" 
+                                                 Height="28"
+                                                 FontWeight="Bold" 
+                                                 FontSize="14"
+                                                 Foreground="#1976D2"
+                                                 Background="#E3F2FD"
+                                                 BorderThickness="0"
+                                                 TextAlignment="Center"
+                                                 VerticalContentAlignment="Center"
+                                                 Margin="5,0"/>
                                         
                                         <Button Command="{Binding DataContext.IncreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                                 CommandParameter="{Binding}"
