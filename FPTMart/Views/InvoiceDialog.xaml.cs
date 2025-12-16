@@ -20,7 +20,7 @@ public partial class InvoiceDialog : Window
         try
         {
             // Create directory if not exists
-            var invoicesDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", 
+            var invoicesDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", 
                 "FPTMart.DAL", "Data", "Invoices");
             invoicesDir = Path.GetFullPath(invoicesDir);
             Directory.CreateDirectory(invoicesDir);
